@@ -1,0 +1,19 @@
+Source: seanodes-unittesting
+Section: utils
+Priority: extra
+Maintainer: support <support@seanodes.com>
+Build-Depends: debhelper (>= 5), autotools-dev
+Standards-Version: 3.7.2
+
+Package: seanodes-unittesting
+Architecture: any
+Depends: ${misc:Depends}
+Description: Seanodes unit testing library
+ The Seanodes unit testing library allows you to write and execute unit tests for
+ any piece of software. Unit tests are essentials during software development; they
+ ensures you that the code you write works as you planned to.
+ Writing unit tests is an investment. Rigourous tests allows you to easily change
+ you code and add new features without worrying breaking the old ones or introducing
+ bugs. Any software part (library, module, algorithm, etc.) should be unit tested
+ before its integration within a product.
+

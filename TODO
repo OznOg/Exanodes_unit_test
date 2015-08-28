@@ -1,0 +1,3 @@
+* Catch sigsegv and the like;
+* Add --debug parameter and ut_debug_level() for the tested unit to be able
+  to decide whether to display its debug messages.

@@ -1,0 +1,110 @@
+#
+# Copyright 2002, 2015 Seanodes Ltd http://www.seanodes.com. All rights
+# reserved and protected by French, UK, U.S. and other countries' copyright laws.
+# This file is part of Exanodes Unit test library and is subject to the terms
+# and conditions defined in the LICENSE file which is present in the root
+# directory of the project.
+#
+
+dnl Process this file with autoconf to produce a configure script.
+
+# --- Autoconf initialization ----------------------------------------
+
+AC_INIT([seanodes-unittesting], [1.0])
+
+PACKAGE=seanodes-unittesting
+VERSION=1.0
+
+# --- Check compilers ------------------------------------------------
+
+# GNU C compiler
+
+AC_PROG_CC
+if test "$GCC" != yes; then
+  AC_MSG_ERROR([Cannot find GNU C compiler])
+fi
+
+AC_PROG_CXX
+if test "$GXX" != yes; then
+  AC_MSG_ERROR([Cannot find GNU C++ compiler])
+fi
+
+dnl Find gcc version
+dnl @<:@ is the quoted version of [, and @:>@ is the quoted version of ]
+GCC_VERSION=`$CC -v 2>&1 | grep "^gcc version" | sed 's,^gcc version \(@<:@0-9@:>@\).*,\1,'`
+
+# --- Check helpers programs -----------------------------------------
+
+# make, install and ln -s
+
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+AC_PROG_LN_S
+
+# --- Compute C flags ----------------------------------------
+
+CFLAGS="-fPIC"
+LDFLAGS="-L${libdir}"
+
+if test "$with_symbols" = yes; then
+  CFLAGS="$CFLAGS -ggdb"
+else
+  CFLAGS="$CFLAGS -O2"
+fi
+
+CFLAGS="$CFLAGS -I\$(top_srcdir) -include config.h"
+
+CFLAGS="$CFLAGS -Wall -fno-strict-aliasing"
+
+if test "$with_werror" != no; then
+  CFLAGS="$CFLAGS -Werror"
+fi
+
+if test $GCC_VERSION -gt 3; then
+  CFLAGS="$CFLAGS -Wdeclaration-after-statement"
+fi
+
+# --- Check endianness -----------------------------------------------
+
+AC_C_BIGENDIAN
+if test "$WORDS_BIGENDIAN"; then
+  AC_DEFINE(EXA_BIG_ENDIAN, [1], [Cpu is big endian])
+else
+  AC_DEFINE(EXA_LITTLE_ENDIAN, [1], [Cpu is little endian])
+fi
+
+# --- add compilation flags ------------------------------------------
+
+AM_CFLAGS="-D EXA_LITTLE_ENDIAN"
+
+# --- Automake initialization ----------------------------------------
+
+AM_INIT_AUTOMAKE()
+AM_CONFIG_HEADER(config.h)
+
+AM_PROG_LIBTOOL
+
+
+# --- Output files ---------------------------------------------------
+
+AC_OUTPUT([
+Doxyfile
+Makefile
+src/Makefile
+test/Makefile
+use_cases/Makefile
+use_cases/ut_exa_nodeset/Makefile
+use_cases/ut_basic/Makefile
+debian/Makefile
+])
+
+
+# --- Summary --------------------------------------------------------
+
+echo ""
+echo "***************************************************"
+echo ""
+echo type \'make\' to compile the unit testing library
+echo ""
+echo "***************************************************"
+echo ""

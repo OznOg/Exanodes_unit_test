@@ -1,0 +1,4 @@
+usr/bin/ut_build
+usr/include/unit_testing.h
+usr/share/unit_testing/ut_build_template.c
+
