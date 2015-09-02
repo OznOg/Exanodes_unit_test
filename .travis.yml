@@ -1,0 +1,11 @@
+language: c
+
+
+before_install:
+          - sudo apt-get update -qq
+          - sudo apt-get install -y automake make libtool autoconf rpm
+
+
+script: ./autogen.sh && make && make dist && rpmbuild -ta seano*z
+
+
